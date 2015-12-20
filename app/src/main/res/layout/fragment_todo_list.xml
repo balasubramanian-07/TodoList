@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.flipkart.todolist.TodoListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD NEW TODO"
+        android:id="@+id/add_button"
+        android:layout_gravity="left|top" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="261dp"
+        android:id="@+id/todo_list_view"
+        android:layout_gravity="left|bottom"
+        android:layout_below="@+id/add_button"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
