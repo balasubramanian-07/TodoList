@@ -13,9 +13,10 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             loadTodoListFragment();
-         }
+        }
+        loadTodoListFragment();
     }
 
     private void loadTodoListFragment() {
@@ -25,14 +26,12 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.main_layout, todoListFragment, "TLF");
+        transaction.add(R.id.main_layout, todoListFragment, Constants.TASK_LIST_FRAGMENT);
         transaction.commit();
     }
 
     @Override
     public void switchFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-
-
     }
 }

@@ -10,15 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD NEW TODO"
-        android:id="@+id/add_button"
+        android:id="@+id/addTaskButton"
         android:layout_gravity="left|top" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="261dp"
-        android:id="@+id/todo_list_view"
+        android:id="@+id/todoListView"
         android:layout_gravity="left|bottom"
-        android:layout_below="@+id/add_button"
+        android:layout_below="@+id/addTaskButton"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
