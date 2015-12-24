@@ -1,16 +1,36 @@
 package com.flipkart.todolist;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class TaskDetailFragment extends Fragment {
 
     private static final String TAG = "TaskDetailFragment";
+    private DatePicker datePicker;
+    private EditText taskTitle;
+    private EditText taskNotes;
+    private Button saveTask ;
+    private Button cancelTask;
+    private Button deleteTask;
+    private Spinner setPriority;
+    private Task task;
+    private Date taskDueDate;
 
     public TaskDetailFragment() {
         // Required empty public constructor
@@ -21,7 +41,60 @@ public class TaskDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.i(TAG, "======================= Inside onCreateView of detail fragment");
-        return inflater.inflate(R.layout.fragment_task_detail, container, false);
+        View fragView = inflater.inflate(R.layout.fragment_task_detail, container, false);
+        datePicker = (DatePicker) fragView.findViewById(R.id.datePicker);
+        taskTitle = (EditText) fragView.findViewById(R.id.editTaskTitle);
+        taskNotes = (EditText) fragView.findViewById(R.id.editTaskNotes);
+        saveTask =  (Button) fragView.findViewById(R.id.saveTask);
+        cancelTask =  (Button) fragView.findViewById(R.id.cancelTask);
+
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        final String formattedDate = sdf.format(calendar.getTime());
+
+        try {
+            taskDueDate = sdf.parse(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        saveTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = taskTitle.getText().toString();
+                String notes = taskNotes.getText().toString();
+                task = new Task(title, notes, taskDueDate,1);
+
+                Intent intent = new Intent();
+                intent.putExtra(Constants.TASK_TITLE, title);
+                intent.putExtra(Constants.TASK_NOTES, notes);
+                intent.putExtra(Constants.TASK_DUE_DATE,formattedDate);
+
+                getTargetFragment().onActivityResult(Constants.LIST_TO_DETAIL_FRAGMENT_CODE,
+                        Activity.RESULT_OK, intent);
+                android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
+
+            }
+        });
+
+        cancelTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
+
+
+
+
+        return fragView;
     }
 
 

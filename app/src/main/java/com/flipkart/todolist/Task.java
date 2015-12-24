@@ -1,9 +1,11 @@
 package com.flipkart.todolist;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 public class Task {
-
     private String title;
     private String notes;
     private Date date;
@@ -37,3 +39,4 @@ public class Task {
         return priority;
     }
 }
+
