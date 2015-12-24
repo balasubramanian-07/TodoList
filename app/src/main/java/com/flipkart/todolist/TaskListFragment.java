@@ -40,12 +40,12 @@ public class TaskListFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-
-
     }
 
     public void taskDetail() {
+
         if ( delegate != null) {
             delegate.switchFragment();
         }

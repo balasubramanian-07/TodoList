@@ -11,25 +11,67 @@
         android:layout_height="wrap_content"
         android:id="@+id/editTaskDescription"
         android:hint="Eg. Withdraw 10k from bank"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="160dp" />
-
-    <DatePicker
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/datePicker"
-        android:layout_above="@+id/editTaskDescription"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Task Detail"
         android:gravity="center_horizontal"
         android:id="@+id/taskDetailTextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:clickable="false"
+        android:editable="false"
+        android:enabled="false"
+        android:textSize="25dp"
+        android:padding="5dp"
+        android:textColor="#0f0f0f"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/taskDescriptionMultiline"
+        android:hint="Task description"
+        android:layout_below="@+id/editTaskDescription"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/prioritySpinner"
+        android:layout_below="@+id/taskDescriptionMultiline"
+        android:layout_alignParentEnd="true"
+        android:spinnerMode="dropdown"
+        android:layout_alignBottom="@+id/taskPriorityTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Task Priority"
+        android:id="@+id/taskPriorityTextView"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/taskDescriptionMultiline"
+        android:layout_toStartOf="@+id/prioritySpinner"
+        android:gravity="center"
+        android:textSize="20dp"/>
+
+    <DatePicker
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/datePicker"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:nestedScrollingEnabled="true"
+        android:layout_above="@+id/editTaskDescription"
+        android:layout_alignEnd="@+id/prioritySpinner" />
+
 
 </RelativeLayout>

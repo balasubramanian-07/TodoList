@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
 
     @Override
     public void switchFragment() {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         TaskListFragment taskListFragment = (TaskListFragment) fragmentManager.findFragmentByTag(TASK_LIST_FRAGMENT_TAG);
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
             taskDetailFragment.setTargetFragment(taskListFragment, LIST_TO_DETAIL_FRAGMENT_CODE);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.remove(taskListFragment);
-            transaction.add(taskDetailFragment,Constants.TASK_DETAIL_FRAGMENT_TAG);
+            transaction.add(R.id.main_layout, taskDetailFragment, Constants.TASK_DETAIL_FRAGMENT_TAG);
             transaction.addToBackStack(null);
             transaction.commit();
         }
