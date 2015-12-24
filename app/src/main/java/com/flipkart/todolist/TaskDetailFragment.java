@@ -13,11 +13,16 @@ import android.view.ViewGroup;
  */
 public class TaskDetailFragment extends Fragment {
 
+    private SwitchToAddTodoFragmentDelegate delegate;
 
     public TaskDetailFragment() {
         // Required empty public constructor
     }
 
+    public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
+
+        this.delegate = delegate;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,5 +30,8 @@ public class TaskDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_task_detail, container, false);
     }
+
+
+
 
 }
