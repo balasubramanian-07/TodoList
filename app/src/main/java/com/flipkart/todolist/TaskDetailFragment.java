@@ -14,14 +14,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class TaskDetailFragment extends Fragment {
 
     private static final String TAG = "TaskDetailFragment";
+
     private DatePicker datePicker;
     private EditText taskTitle;
     private EditText taskNotes;
@@ -29,8 +28,6 @@ public class TaskDetailFragment extends Fragment {
     private Button cancelTask;
     private Button deleteTask;
     private Spinner setPriority;
-    private Task task;
-    private Date taskDueDate;
 
     public TaskDetailFragment() {
         // Required empty public constructor
@@ -40,7 +37,8 @@ public class TaskDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i(TAG, "======================= Inside onCreateView of detail fragment");
+        Log.i(TAG, "Inside onCreateView of detail fragment");
+
         View fragView = inflater.inflate(R.layout.fragment_task_detail, container, false);
         datePicker = (DatePicker) fragView.findViewById(R.id.datePicker);
         taskTitle = (EditText) fragView.findViewById(R.id.editTaskTitle);
@@ -48,27 +46,20 @@ public class TaskDetailFragment extends Fragment {
         saveTask =  (Button) fragView.findViewById(R.id.saveTask);
         cancelTask =  (Button) fragView.findViewById(R.id.cancelTask);
 
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year = datePicker.getYear();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        final String formattedDate = sdf.format(calendar.getTime());
-
-        try {
-            taskDueDate = sdf.parse(formattedDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         saveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title = taskTitle.getText().toString();
                 String notes = taskNotes.getText().toString();
-                task = new Task(title, notes, taskDueDate,1);
+
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth();
+                int year = datePicker.getYear();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                final String formattedDate = sdf.format(calendar.getTime());
 
                 Intent intent = new Intent();
                 intent.putExtra(Constants.TASK_TITLE, title);
@@ -90,9 +81,6 @@ public class TaskDetailFragment extends Fragment {
                 fragmentManager.popBackStack();
             }
         });
-
-
-
 
         return fragView;
     }
