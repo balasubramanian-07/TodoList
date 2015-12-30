@@ -25,6 +25,8 @@ public class TaskListFragment extends Fragment {
     private Button taskDetailButton;
     private ListView taskListView;
     private ArrayList<Task> taskList;
+    private ViewTaskList viewTaskList;
+    private DbGateway dbGateway;
 
     public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
 
@@ -45,6 +47,10 @@ public class TaskListFragment extends Fragment {
                 taskDetail();
             }
         });
+
+        dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
+        viewTaskList = new ViewTaskList(dbGateway,fragmentView,getActivity().getApplicationContext());
+        viewTaskList.execute();
         return fragmentView;
     }
 
@@ -52,25 +58,6 @@ public class TaskListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if ((requestCode == Constants.LIST_TO_DETAIL_FRAGMENT_CODE) && (resultCode == Activity.RESULT_OK)) {
-
-            taskList = getTaskList();
-//            TODO: This code will be removed, this is just to check functionality
-            String title = data.getStringExtra(Constants.TASK_TITLE);
-            String notes = data.getStringExtra(Constants.TASK_NOTES);
-            String formattedDate =  data.getStringExtra(Constants.TASK_DUE_DATE);
-
-            Task task = new Task(title, notes, formattedDate, 1);
-            taskList.add(task);
-            Log.i(TAG, "Task Got Added: " + taskList.get(0).getTitle());
-        }
-
     }
 
     @Override
@@ -84,12 +71,4 @@ public class TaskListFragment extends Fragment {
             delegate.switchFragment();
         }
     }
-
-    private ArrayList<Task> getTaskList() {
-        if (taskList == null) {
-            taskList = new ArrayList<Task>();
-        }
-        return taskList;
-    }
-
 }

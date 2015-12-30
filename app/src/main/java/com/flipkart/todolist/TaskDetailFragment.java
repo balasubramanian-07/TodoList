@@ -84,16 +84,8 @@ public class TaskDetailFragment extends Fragment {
                 addTask = new AddTask(dbGateway,task);
                 addTask.execute();
 
-//                Intent intent = new Intent();
-//                intent.putExtra(Constants.TASK_TITLE, title);
-//                intent.putExtra(Constants.TASK_NOTES, notes);
-//                intent.putExtra(Constants.TASK_DUE_DATE,formattedDate);
-//
-//                getTargetFragment().onActivityResult(Constants.LIST_TO_DETAIL_FRAGMENT_CODE,
-//                        Activity.RESULT_OK, intent);
                 android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
-
             }
         });
 
