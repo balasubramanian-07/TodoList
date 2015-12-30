@@ -20,7 +20,7 @@ import java.util.Calendar;
 public class TaskDetailFragment extends Fragment {
 
     private static final String TAG = "TaskDetailFragment";
-
+    private Task task;
     private DatePicker datePicker;
     private EditText taskTitle;
     private EditText taskNotes;
@@ -29,8 +29,19 @@ public class TaskDetailFragment extends Fragment {
     private Button deleteTask;
     private Spinner setPriority;
 
+    private Bundle bundle;
+    private AddTask addTask;
+    private DbGateway dbGateway;
+
     public TaskDetailFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
     }
 
     @Override
@@ -61,13 +72,25 @@ public class TaskDetailFragment extends Fragment {
                 calendar.set(year, month, day);
                 final String formattedDate = sdf.format(calendar.getTime());
 
-                Intent intent = new Intent();
-                intent.putExtra(Constants.TASK_TITLE, title);
-                intent.putExtra(Constants.TASK_NOTES, notes);
-                intent.putExtra(Constants.TASK_DUE_DATE,formattedDate);
+//                Getting Task from the arguments passed to detail fragment
+                bundle = getArguments();
+                if (bundle != null) {
+                    task = (Task) bundle.getSerializable(Constants.TASK_OBJECT_TAG);
+                }else{
+                    task = new Task(title,notes,formattedDate,1);
+                }
 
-                getTargetFragment().onActivityResult(Constants.LIST_TO_DETAIL_FRAGMENT_CODE,
-                        Activity.RESULT_OK, intent);
+//                Using Async task to insert/update to db
+                addTask = new AddTask(dbGateway,task);
+                addTask.execute();
+
+//                Intent intent = new Intent();
+//                intent.putExtra(Constants.TASK_TITLE, title);
+//                intent.putExtra(Constants.TASK_NOTES, notes);
+//                intent.putExtra(Constants.TASK_DUE_DATE,formattedDate);
+//
+//                getTargetFragment().onActivityResult(Constants.LIST_TO_DETAIL_FRAGMENT_CODE,
+//                        Activity.RESULT_OK, intent);
                 android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
 

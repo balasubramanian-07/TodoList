@@ -10,4 +10,5 @@ public final class Constants {
     public static final String TASK_TITLE = "title";
     public static final String TASK_NOTES ="notes" ;
     public static final String TASK_DUE_DATE = "task_due_date";
+
 }

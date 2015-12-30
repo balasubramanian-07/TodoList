@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         if (savedInstanceState == null) {
             loadTodoListFragment();
         }
-
         // TODO: Need to handle case when device is rotated
     }
 

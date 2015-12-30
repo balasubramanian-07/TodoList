@@ -65,14 +65,8 @@ public class TaskListFragment extends Fragment {
             String title = data.getStringExtra(Constants.TASK_TITLE);
             String notes = data.getStringExtra(Constants.TASK_NOTES);
             String formattedDate =  data.getStringExtra(Constants.TASK_DUE_DATE);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = null;
-            try {
-                date = sdf.parse(formattedDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Task task = new Task(title, notes, date, 1);
+
+            Task task = new Task(title, notes, formattedDate, 1);
             taskList.add(task);
             Log.i(TAG, "Task Got Added: " + taskList.get(0).getTitle());
         }
