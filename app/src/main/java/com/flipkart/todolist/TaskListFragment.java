@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,25 +20,24 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements AsyncTaskCompletedListener<SimpleCursorAdapter> {
 
     private static final String TAG = "TaskListFragment";
     private SwitchToAddTodoFragmentDelegate delegate;
     private Button taskDetailButton;
     private ListView taskListView;
-    private ArrayList<Task> taskList;
     private ViewTaskList viewTaskList;
     private DbGateway dbGateway;
+    private Bundle bundle;
+
 
     public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
-
         this.delegate = delegate;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View fragmentView = inflater.inflate(R.layout.fragment_task_list, null);
         taskListView = (ListView) fragmentView.findViewById(R.id.taskListView);
         taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
@@ -49,14 +50,20 @@ public class TaskListFragment extends Fragment {
         });
 
         dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
-        viewTaskList = new ViewTaskList(dbGateway,fragmentView,getActivity().getApplicationContext());
+        viewTaskList = new ViewTaskList(dbGateway,fragmentView,getActivity().getApplicationContext(),this);
         viewTaskList.execute();
+
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
         return fragmentView;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -68,7 +75,12 @@ public class TaskListFragment extends Fragment {
 
     public void taskDetail() {
         if ( delegate != null) {
-            delegate.switchFragment();
+            delegate.switchFragment(bundle);
         }
+    }
+
+    @Override
+    public void onTaskComplete(SimpleCursorAdapter simpleCursorAdapter) {
+        simpleCursorAdapter.notifyDataSetChanged();
     }
 }

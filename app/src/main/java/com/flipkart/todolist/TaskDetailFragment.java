@@ -67,7 +67,7 @@ public class TaskDetailFragment extends Fragment {
                 int month = datePicker.getMonth();
                 int year = datePicker.getYear();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
                 final String formattedDate = sdf.format(calendar.getTime());
