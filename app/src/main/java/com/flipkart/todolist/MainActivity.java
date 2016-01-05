@@ -4,11 +4,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import static com.flipkart.todolist.Constants.LIST_TO_DETAIL_FRAGMENT_CODE;
+import static com.flipkart.todolist.Constants.TASK_DETAIL_FRAGMENT_TAG;
 import static com.flipkart.todolist.Constants.TASK_LIST_FRAGMENT_TAG;
 
 public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFragmentDelegate {
+
+    private static final String TAG = "MainActivity" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
     }
 
     @Override
-    public void switchFragment(Bundle bundle) {
+    public void switchFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         TaskListFragment taskListFragment = (TaskListFragment) fragmentManager.findFragmentByTag(TASK_LIST_FRAGMENT_TAG);
 
@@ -42,12 +46,10 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
 
         if (taskListFragment != null) {
             taskDetailFragment.setTargetFragment(taskListFragment, LIST_TO_DETAIL_FRAGMENT_CODE);
-            if( bundle != null) {
-                taskDetailFragment.setArguments(bundle);
-            }
+
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.remove(taskListFragment);
-            transaction.add(R.id.main_layout, taskDetailFragment, Constants.TASK_DETAIL_FRAGMENT_TAG);
+            transaction.add(R.id.main_layout, taskDetailFragment, TASK_DETAIL_FRAGMENT_TAG);
             transaction.addToBackStack(null);
             transaction.commit();
         }

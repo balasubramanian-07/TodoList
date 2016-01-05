@@ -40,7 +40,6 @@ public class TaskDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
     }
 
@@ -51,12 +50,28 @@ public class TaskDetailFragment extends Fragment {
         Log.i(TAG, "Inside onCreateView of detail fragment");
 
         View fragView = inflater.inflate(R.layout.fragment_task_detail, container, false);
-        datePicker = (DatePicker) fragView.findViewById(R.id.datePicker);
-        taskTitle = (EditText) fragView.findViewById(R.id.editTaskTitle);
-        taskNotes = (EditText) fragView.findViewById(R.id.editTaskNotes);
-        saveTask =  (Button) fragView.findViewById(R.id.saveTask);
-        cancelTask =  (Button) fragView.findViewById(R.id.cancelTask);
+        setWidgets(fragView);
+        setListeners();
 
+        return fragView;
+    }
+
+    private void setListeners() {
+        setSaveButtonListener();
+        setCancelButtonListener();
+    }
+
+    private void setCancelButtonListener() {
+        cancelTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
+    }
+
+    private void setSaveButtonListener() {
         saveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,36 +86,27 @@ public class TaskDetailFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
                 final String formattedDate = sdf.format(calendar.getTime());
+                task = new Task(title, notes, formattedDate, 1);
 
-//                Getting Task from the arguments passed to detail fragment
-                bundle = getArguments();
-                if (bundle != null) {
-                    task = (Task) bundle.getSerializable(Constants.TASK_OBJECT_TAG);
-                }else{
-                    task = new Task(title,notes,formattedDate,1);
-                }
-
-//                Using Async task to insert/update to db
-                addTask = new AddTask(dbGateway,task);
-                addTask.execute();
+//              Using Async task to insert/update to db
+                insertTaskInDb(task);
 
                 android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
             }
         });
-
-        cancelTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
-            }
-        });
-
-        return fragView;
     }
 
+    private void insertTaskInDb(Task task) {
+        addTask = new AddTask(dbGateway, task);
+        addTask.execute();
+    }
 
-
-
+    private void setWidgets(View fragView) {
+        datePicker = (DatePicker) fragView.findViewById(R.id.datePicker);
+        taskTitle = (EditText) fragView.findViewById(R.id.editTaskTitle);
+        taskNotes = (EditText) fragView.findViewById(R.id.editTaskNotes);
+        saveTask =  (Button) fragView.findViewById(R.id.saveTask);
+        cancelTask =  (Button) fragView.findViewById(R.id.cancelTask);
+    }
 }

@@ -1,7 +1,5 @@
 package com.flipkart.todolist;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,12 +11,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
+import static com.flipkart.todolist.Constants.TASK_OBJECT_TAG;
 
 public class TaskListFragment extends Fragment implements AsyncTaskCompletedListener<SimpleCursorAdapter> {
 
@@ -28,54 +23,78 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     private ListView taskListView;
     private ViewTaskList viewTaskList;
     private DbGateway dbGateway;
-    private Bundle bundle;
-
+    private Task task;
 
     public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
-        this.delegate = delegate;
+         this.delegate = delegate;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    private void showTasksInUI(View fragmentView) {
+
+        viewTaskList = new ViewTaskList(dbGateway, fragmentView, getActivity().getApplicationContext(), this);
+        viewTaskList.execute();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_task_list, null);
-        taskListView = (ListView) fragmentView.findViewById(R.id.taskListView);
-        taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
 
-        taskDetailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                taskDetail();
-            }
-        });
+        setWidgets(fragmentView);
+        setListeners();
+        showTasksInUI(fragmentView);
 
-        dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
-        viewTaskList = new ViewTaskList(dbGateway,fragmentView,getActivity().getApplicationContext(),this);
-        viewTaskList.execute();
-
-        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
         return fragmentView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private void setListeners() {
+        setAddTaskButtonListener();
+        setTaskListViewListener();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
+    private void setAddTaskButtonListener() {
+        taskDetailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToTaskDetailFragment();
+            }
+        });
     }
 
-    public void taskDetail() {
-        if ( delegate != null) {
-            delegate.switchFragment(bundle);
+    private void setTaskListViewListener() {
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "Inside onItemClick on list view");
+                TextView title = (TextView) view.findViewById(R.id.taskTitle);
+                TextView dueDate = (TextView) view.findViewById(R.id.taskDueDate);
+                String taskTitle = title.getText().toString();
+                String taskDueDate = dueDate.getText().toString();
+                task = new Task(taskTitle, null, taskDueDate, 1);
+                goToTaskDetailFragment();
+            }
+        });
+    }
+
+    private void setWidgets(View fragmentView) {
+        taskListView = (ListView) fragmentView.findViewById(R.id.taskListView);
+        taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
+    }
+
+    public void goToTaskDetailFragment() {
+        if (delegate != null) {
+            delegate.switchFragment();
         }
     }
 
