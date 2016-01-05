@@ -51,9 +51,8 @@ public class ViewTaskList extends AsyncTask<String,Void,Cursor> {
         taskListView = (ListView) taskListFragmentView.findViewById(R.id.taskListView);
         String[] from = {DUE_DATE,TITLE,PRIORITY};
         int[] to = {R.id.taskDueDate,R.id.taskTitle, R.id.taskPriority};
-        SimpleCursorAdapter sCursorAdapter = new SimpleCursorAdapter(context, R.layout.row,cursor,from,to);
-        taskListView.setAdapter(sCursorAdapter);
+//        taskListView.setAdapter(listViewAdapter);
 
-        callback.onTaskComplete(sCursorAdapter);
+//        callback.onTaskComplete(listViewAdapter);
     }
 }
