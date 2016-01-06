@@ -1,9 +1,11 @@
 package com.flipkart.todolist.activities;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.delegates.SwitchToAddTodoFragmentDelegate;
@@ -34,16 +36,16 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         TaskListFragment taskListFragment = new TaskListFragment();
         taskListFragment.setDelegate(this);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.main_layout, taskListFragment, TASK_LIST_FRAGMENT_TAG);
+        transaction.add(R.id.main_layout,  taskListFragment, TASK_LIST_FRAGMENT_TAG);
         transaction.commit();
     }
 
     @Override
     public void switchFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         TaskListFragment taskListFragment = (TaskListFragment) fragmentManager.findFragmentByTag(TASK_LIST_FRAGMENT_TAG);
 
         TaskDetailFragment taskDetailFragment = new TaskDetailFragment();

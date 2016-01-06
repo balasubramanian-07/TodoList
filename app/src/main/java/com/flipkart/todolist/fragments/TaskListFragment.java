@@ -3,7 +3,8 @@ package com.flipkart.todolist.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+//import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,6 +123,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     @Override
     public void onTaskComplete(Cursor cursor) {
 
+        Log.i(TAG,"Inside the onTaskComplete: Showing results on Task Lst UI");
         tasks = (ArrayList<Task>) TaskMapper.map(cursor);
         listViewAdapter.setTasks(tasks);
         listViewAdapter.notifyDataSetChanged();

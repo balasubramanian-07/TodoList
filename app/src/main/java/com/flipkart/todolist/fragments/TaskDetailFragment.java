@@ -2,9 +2,10 @@ package com.flipkart.todolist.fragments;
 
 
 
-import android.os.Bundle;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.os.Bundle;
+//import android.app.Fragment;
+//import android.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,6 @@ import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.entities.Task;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class TaskDetailFragment extends Fragment {
 
@@ -85,7 +83,7 @@ public class TaskDetailFragment extends Fragment {
 //              Using Async task to insert/update to db
                 insertTaskInDb(task);
 
-                FragmentManager fragmentManager = getFragmentManager();
+                android.app.FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
             }
         });
@@ -118,7 +116,7 @@ public class TaskDetailFragment extends Fragment {
         cancelTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               FragmentManager fragmentManager = getFragmentManager();
+               android.app.FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
             }
         });

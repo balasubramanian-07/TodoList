@@ -38,6 +38,7 @@ public class AddTask extends AsyncTask<String,Void,Void> {
         row.put(TITLE, task.getTitle());
         row.put(NOTES, task.getNotes());
         row.put(DUE_DATE, String.valueOf(task.getDate()));
+        row.put(DUE_TIME, String.valueOf(task.getDate()));
         row.put(PRIORITY, task.getPriority());
         row.put(STATUS, String.valueOf(ValidStatus.CREATED));
         if (task.getTask_id() == null){
