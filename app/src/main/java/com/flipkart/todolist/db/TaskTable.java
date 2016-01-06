@@ -7,6 +7,7 @@ public final class TaskTable {
     public static final String NOTES = "notes";
     public static final String PRIORITY = "priority";
     public static final String DUE_DATE = "due_date";
+    public static final String DUE_TIME = "due_time";
     public static final String STATUS = "status";
     public static final String CREATED_AT = "created_at";
     public enum ValidStatus {

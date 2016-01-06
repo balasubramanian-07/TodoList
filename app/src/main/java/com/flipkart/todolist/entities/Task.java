@@ -9,14 +9,16 @@ import java.util.Date;
 public class Task implements Serializable {
     private String title;
     private String notes;
-    private String date;
+    private String dueDate;
+    private String dueTime;
     private int priority;
     private Integer task_id;
 
-    public Task(String title, String notes, String date, int priority) {
+    public Task(String title, String notes, String dueDate,String dueTime, int priority) {
         this.title = title;
         this.notes = notes;
-        this.date = date;
+        this.dueDate = dueDate;
+        this.dueTime = dueTime;
         this.priority = priority;
     }
 
@@ -32,7 +34,7 @@ public class Task implements Serializable {
 
     public String getDate() {
 
-        return date;
+        return dueDate;
     }
 
     public int getPriority() {
@@ -46,6 +48,10 @@ public class Task implements Serializable {
 
     public void setTask_id(int task_id) {
         this.task_id = (Integer) task_id;
+    }
+
+    public String getDueTime() {
+        return dueTime;
     }
 }
 

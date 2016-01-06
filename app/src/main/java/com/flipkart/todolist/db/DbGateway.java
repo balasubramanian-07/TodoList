@@ -11,9 +11,10 @@ public final class DbGateway extends SQLiteOpenHelper {
 
     private static final String TAG = "DbGateway" ;
 
+
     public DbGateway(Context context) {
 
-        super(context, "todolist.db", null, 4);
+        super(context, "todolist.db", null, 5);
     }
 
     @Override
@@ -24,7 +25,8 @@ public final class DbGateway extends SQLiteOpenHelper {
                 + "(" + ID + " INTEGER PRIMARY KEY"
                 + "," + TITLE + " TEXT NOT NULL"
                 + "," + NOTES + " TEXT NOT NULL"
-                + "," + DUE_DATE + " DATETIME NOT NULL"
+                + "," + DUE_DATE + " TEXT NOT NULL"
+                + "," + DUE_TIME + " TEXT NOT NULL"
                 + "," + PRIORITY + " INT NOT NULL"
                 + "," + STATUS + " TEXT NOT NULL"
                 + "," + CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP"

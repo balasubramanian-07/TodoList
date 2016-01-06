@@ -1,16 +1,18 @@
 package com.flipkart.todolist.fragments;
 
 
+
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.flipkart.todolist.async_tasks.AddTask;
 import com.flipkart.todolist.db.DbGateway;
@@ -25,7 +27,8 @@ public class TaskDetailFragment extends Fragment {
 
     private static final String TAG = "TaskDetailFragment";
     private Task task;
-    private DatePicker datePicker;
+    private TextView dueDate;
+    private TextView dueTime;
     private EditText taskTitle;
     private EditText taskNotes;
     private Button saveTask ;
@@ -63,16 +66,8 @@ public class TaskDetailFragment extends Fragment {
     private void setListeners() {
         setSaveButtonListener();
         setCancelButtonListener();
-    }
-
-    private void setCancelButtonListener() {
-        cancelTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
-            }
-        });
+        setDatePickerListener();
+        setTimePickerListener();
     }
 
     private void setSaveButtonListener() {
@@ -81,21 +76,49 @@ public class TaskDetailFragment extends Fragment {
             public void onClick(View v) {
                 String title = taskTitle.getText().toString();
                 String notes = taskNotes.getText().toString();
+                String date = dueDate.getText().toString();
+                String time = dueTime.getText().toString();
 
-                int day = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth();
-                int year = datePicker.getYear();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, day);
-                final String formattedDate = sdf.format(calendar.getTime());
-                task = new Task(title, notes, formattedDate, 1);
+                task = new Task(title, notes, date,time, 1);
 
 //              Using Async task to insert/update to db
                 insertTaskInDb(task);
 
-                android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
+    }
+
+    private void setTimePickerListener() {
+        dueTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment timePickerFragment = new TimePickerFragment();
+                timePickerFragment.setTextView(dueTime);
+                timePickerFragment.show( getFragmentManager(), "timePicker");
+            }
+        });
+    }
+
+    private void setDatePickerListener() {
+        dueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.setTextView(dueDate);
+                datePickerFragment.show( getFragmentManager(), "datePicker");
+            }
+        });
+
+    }
+
+    private void setCancelButtonListener() {
+        cancelTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
             }
         });
@@ -107,7 +130,8 @@ public class TaskDetailFragment extends Fragment {
     }
 
     private void setWidgets(View fragView) {
-        datePicker = (DatePicker) fragView.findViewById(R.id.datePicker);
+        dueDate = (TextView) fragView.findViewById(R.id.dueDateTextView);
+        dueTime = (TextView) fragView.findViewById(R.id.dueTimeTextView);
         taskTitle = (EditText) fragView.findViewById(R.id.editTaskTitle);
         taskNotes = (EditText) fragView.findViewById(R.id.editTaskNotes);
         saveTask =  (Button) fragView.findViewById(R.id.saveTask);

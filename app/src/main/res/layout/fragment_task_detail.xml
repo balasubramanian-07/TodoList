@@ -63,16 +63,6 @@
         android:gravity="center"
         android:textSize="20dp"/>
 
-    <DatePicker
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/datePicker"
-        android:datePickerMode="spinner"
-        android:calendarViewShown="false"
-        android:nestedScrollingEnabled="true"
-        android:layout_above="@+id/editTaskTitle"
-        android:layout_alignEnd="@+id/prioritySpinner" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,6 +79,23 @@
         android:id="@+id/cancelTask"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/prioritySpinner" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Due Date"
+        android:id="@+id/dueDateTextView"
+        android:layout_marginTop="71dp"
+        android:layout_below="@+id/taskDetailTextView"
+        android:layout_alignStart="@+id/saveTask" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Time"
+        android:id="@+id/dueTimeTextView"
+        android:layout_alignTop="@+id/dueDateTextView"
+        android:layout_alignStart="@+id/cancelTask" />
 
 
 </RelativeLayout>

@@ -27,10 +27,8 @@ public class TaskMapper {
             String title = resultSet.getString(resultSet.getColumnIndex(TITLE));
             String description = resultSet.getString(resultSet.getColumnIndex(NOTES));
             String due_date = resultSet.getString(resultSet.getColumnIndex(DUE_DATE));
-//            String due_time = resultSet.getString(resultSet.getColumnIndex(TasksTable.DUE_TIME));
-
-//            tasks.add(new Task(title, description, due_date, due_time));
-            tasks.add(new Task(title, description, due_date,1));
+            String due_time = resultSet.getString(resultSet.getColumnIndex(DUE_TIME));
+            tasks.add(new Task(title, description, due_date,due_time,1));
         }
 
         return tasks;
