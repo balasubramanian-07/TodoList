@@ -25,18 +25,17 @@ public class ViewTaskList extends AsyncTask<String,Void,Cursor> {
     private SQLiteDatabase database;
     private View taskListFragmentView;
     private Context context;
-    private ListView taskListView;
-    private AsyncTaskCompletedListener<SimpleCursorAdapter> callback;
+    private AsyncTaskCompletedListener<Cursor> callback;
 
-    public ViewTaskList(DbGateway dbGateway, View taskListView, Context context, AsyncTaskCompletedListener callback) {
+    public ViewTaskList(DbGateway dbGateway, Context context) {
+
         this.dbGateway = dbGateway;
-        this.taskListFragmentView = taskListView;
         this.context = context;
-        this.callback = callback;
     }
 
     @Override
     protected Cursor doInBackground(String... params) {
+
         database = dbGateway.getWritableDatabase();
         String query = "SELECT * FROM " + TASK_TABLE_NAME +" order by " + DUE_DATE;
         Log.i(TAG, "Query fired : " + query);
@@ -46,13 +45,13 @@ public class ViewTaskList extends AsyncTask<String,Void,Cursor> {
 
     @Override
     protected void onPostExecute(Cursor cursor) {
+
         super.onPostExecute(cursor);
+        callback.onTaskComplete(cursor);
+    }
 
-        taskListView = (ListView) taskListFragmentView.findViewById(R.id.taskListView);
-        String[] from = {DUE_DATE,TITLE,PRIORITY};
-        int[] to = {R.id.taskDueDate,R.id.taskTitle, R.id.taskPriority};
-//        taskListView.setAdapter(listViewAdapter);
+    public void setCallback(AsyncTaskCompletedListener<Cursor> callback) {
 
-//        callback.onTaskComplete(listViewAdapter);
+        this.callback = callback;
     }
 }

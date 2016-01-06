@@ -52,7 +52,7 @@ public class ListViewAdapter extends BaseAdapter {
         ViewHolder viewHolder = (ViewHolder) mainView.getTag();
         viewHolder.taskTitle.setText(task.getTitle());
         viewHolder.taskDueDate.setText(task.getDate());
-        viewHolder.taskPriority.setText(task.getPriority());
+//        viewHolder.taskPriority.setText(task.getPriority());
 
         return mainView;
     }
@@ -69,6 +69,10 @@ public class ListViewAdapter extends BaseAdapter {
         view.setTag(viewHolder);
 
         return view;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     private static class ViewHolder {
