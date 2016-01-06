@@ -1,10 +1,14 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.activities;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.flipkart.todolist.R;
+import com.flipkart.todolist.delegates.SwitchToAddTodoFragmentDelegate;
+import com.flipkart.todolist.fragments.TaskDetailFragment;
+import com.flipkart.todolist.fragments.TaskListFragment;
 
 import static com.flipkart.todolist.Constants.LIST_TO_DETAIL_FRAGMENT_CODE;
 import static com.flipkart.todolist.Constants.TASK_DETAIL_FRAGMENT_TAG;

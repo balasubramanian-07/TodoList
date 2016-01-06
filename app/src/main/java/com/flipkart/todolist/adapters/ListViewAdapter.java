@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.flipkart.todolist.R;
-import com.flipkart.todolist.Task;
+import com.flipkart.todolist.entities.Task;
 
 import java.util.List;
 

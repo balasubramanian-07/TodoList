@@ -1,4 +1,4 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,15 +11,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.R;
+import com.flipkart.todolist.TodoListApplication;
+import com.flipkart.todolist.async_tasks.ViewTaskList;
 import com.flipkart.todolist.adapters.ListViewAdapter;
+import com.flipkart.todolist.delegates.AsyncTaskCompletedListener;
+import com.flipkart.todolist.delegates.SwitchToAddTodoFragmentDelegate;
+import com.flipkart.todolist.entities.Task;
 import com.flipkart.todolist.mappers.TaskMapper;
 
 import java.util.ArrayList;
-
-import static com.flipkart.todolist.Constants.TASK_OBJECT_TAG;
 
 public class TaskListFragment extends Fragment implements AsyncTaskCompletedListener<Cursor> {
 

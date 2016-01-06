@@ -1,4 +1,4 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;

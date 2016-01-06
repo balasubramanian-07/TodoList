@@ -2,13 +2,12 @@ package com.flipkart.todolist.mappers;
 
 import android.database.Cursor;
 
-import com.flipkart.todolist.Task;
-import com.flipkart.todolist.TaskTable;
+import com.flipkart.todolist.entities.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.flipkart.todolist.TaskTable.*;
+import static com.flipkart.todolist.db.TaskTable.*;
 
 /**
  * Created by mayank.gupta on 06/01/16.

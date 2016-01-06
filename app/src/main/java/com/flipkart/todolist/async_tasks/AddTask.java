@@ -1,17 +1,19 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.async_tasks;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import static com.flipkart.todolist.TaskTable.*;
-import static com.flipkart.todolist.TaskTable.DUE_DATE;
-import static com.flipkart.todolist.TaskTable.NOTES;
-import static com.flipkart.todolist.TaskTable.PRIORITY;
-import static com.flipkart.todolist.TaskTable.STATUS;
-import static com.flipkart.todolist.TaskTable.TITLE;
+import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.entities.Task;
+
+import static com.flipkart.todolist.db.TaskTable.*;
+import static com.flipkart.todolist.db.TaskTable.DUE_DATE;
+import static com.flipkart.todolist.db.TaskTable.NOTES;
+import static com.flipkart.todolist.db.TaskTable.PRIORITY;
+import static com.flipkart.todolist.db.TaskTable.STATUS;
+import static com.flipkart.todolist.db.TaskTable.TITLE;
 
 
 /**

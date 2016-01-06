@@ -2,6 +2,8 @@ package com.flipkart.todolist;
 
 import android.app.Application;
 
+import com.flipkart.todolist.db.DbGateway;
+
 /**
  * Created by mayank.gupta on 30/12/15.
  */

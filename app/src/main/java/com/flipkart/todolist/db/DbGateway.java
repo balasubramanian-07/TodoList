@@ -1,11 +1,11 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.flipkart.todolist.TaskTable.*;
+import static com.flipkart.todolist.db.TaskTable.*;
 
 public final class DbGateway extends SQLiteOpenHelper {
 

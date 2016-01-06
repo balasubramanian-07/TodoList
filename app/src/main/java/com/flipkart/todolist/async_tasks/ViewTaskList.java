@@ -1,4 +1,4 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.async_tasks;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,14 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
-import static com.flipkart.todolist.TaskTable.DUE_DATE;
-import static com.flipkart.todolist.TaskTable.PRIORITY;
-import static com.flipkart.todolist.TaskTable.TASK_TABLE_NAME;
-import static com.flipkart.todolist.TaskTable.TITLE;
+import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.delegates.AsyncTaskCompletedListener;
+
+import static com.flipkart.todolist.db.TaskTable.DUE_DATE;
+import static com.flipkart.todolist.db.TaskTable.TASK_TABLE_NAME;
 
 /**
  * Created by mayank.gupta on 30/12/15.

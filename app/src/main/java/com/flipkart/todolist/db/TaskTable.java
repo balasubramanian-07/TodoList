@@ -1,4 +1,4 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.db;
 
 public final class TaskTable {
     public static final String TASK_TABLE_NAME = "tasks";

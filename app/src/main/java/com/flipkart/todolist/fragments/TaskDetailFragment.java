@@ -1,8 +1,6 @@
-package com.flipkart.todolist;
+package com.flipkart.todolist.fragments;
 
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +11,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.flipkart.todolist.async_tasks.AddTask;
+import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.R;
+import com.flipkart.todolist.TodoListApplication;
+import com.flipkart.todolist.entities.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
