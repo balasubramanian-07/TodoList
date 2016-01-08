@@ -63,7 +63,7 @@ public class ListViewAdapter extends BaseAdapter {
 
         ViewHolder viewHolder = new ViewHolder();
         viewHolder.taskTitle = (TextView) view.findViewById(R.id.taskTitle);
-        viewHolder.taskDueDate = (EditText) view.findViewById(R.id.taskDueDate);
+        viewHolder.taskDueDate = (TextView) view.findViewById(R.id.taskDueDate);
         viewHolder.taskPriority = (TextView) view.findViewById(R.id.taskPriority);
 
         view.setTag(viewHolder);
@@ -78,7 +78,7 @@ public class ListViewAdapter extends BaseAdapter {
     private static class ViewHolder {
 
         TextView taskTitle;
-        EditText taskDueDate;
+        TextView taskDueDate;
         TextView taskPriority;
     }
 }

@@ -6,9 +6,13 @@ import android.support.annotation.Nullable;
 //import android.support.v4.app.Fragment;
 import android.app.Fragment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,6 +40,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     private DbGateway dbGateway;
     private ListViewAdapter listViewAdapter;
     private ArrayList<Task> tasks;
+    private Task task;
 
     public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
          this.delegate = delegate;
@@ -43,6 +48,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         dbGateway = ((TodoListApplication) getActivity().getApplication()).dbGateway;
     }
@@ -61,15 +67,60 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         setWidgets(fragmentView);
         setListeners();
         showTasksInUI();
+        setCustomActionBar();
 
         return fragmentView;
+    }
+
+    private void setCustomActionBar() {
+        taskListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+//                Define what to show on the Custom Action Bar when items are selected.
+                // Here you can do something when items are selected/de-selected,
+                // such as update the title in the CAB
+                final int selectedItemCount = taskListView.getCheckedItemCount();
+                mode.setTitle("Selection: " + selectedItemCount + " items");
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//                Define the menu layout for the action bar
+                mode.getMenuInflater().inflate(R.menu.custom_action_bar, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        deleteTask(item);
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        });
+    }
+
+    private void deleteTask(MenuItem item) {
+        
     }
 
     private void setWidgets(View fragmentView) {
 
         taskListView = (ListView) fragmentView.findViewById(R.id.taskListView);
+//        Adding Custom Action Bar using multi choice model listener
+        taskListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listViewAdapter = new ListViewAdapter(getContext(), new ArrayList<Task>());
-        taskListView.setAdapter(listViewAdapter);
 
         taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
     }
@@ -98,24 +149,31 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     }
 
     private void setTaskListViewListener() {
-
+        Log.i(TAG,"Inside setTaskListViewListener");
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Inside onItemClick on list view");
                 TextView title = (TextView) view.findViewById(R.id.taskTitle);
-                TextView dueDate = (TextView) view.findViewById(R.id.taskDueDate);
+//                TextView dueDate = (TextView) view.findViewById(R.id.dueDateTextView);
+//                TextView dueTime = (TextView) view.findViewById(R.id.dueTimeTextView);
+//                TextView notes = (TextView) view.findViewById(R.id.editTaskNotes);
                 String taskTitle = title.getText().toString();
-                String taskDueDate = dueDate.getText().toString();
-//                task = new Task(taskTitle, null, taskDueDate, 1);
+//                String taskDueDate = dueDate.getText().toString();
+//                String taskDueTime = dueTime.getText().toString();
+//                String taskNotes = notes.getText().toString();
+//                task = new Task(taskTitle, taskNotes, taskDueDate,taskDueTime, 1);
                 goToTaskDetailFragment();
             }
         });
+        taskListView.setClickable(true);
+        taskListView.setAdapter(listViewAdapter);
     }
 
     public void goToTaskDetailFragment() {
 
         if (delegate != null) {
+
             delegate.switchFragment();
         }
     }

@@ -19,6 +19,7 @@
         android:id="@+id/taskListView"
         android:layout_gravity="left|bottom"
         android:layout_below="@+id/taskDetailButton"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+          />
 
 </RelativeLayout>
