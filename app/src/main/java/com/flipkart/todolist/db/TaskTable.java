@@ -28,4 +28,33 @@ public final class TaskTable {
             return getValue();
         }
     }
+
+    public static String deleteTaskQuery(String taskTitle) {
+        String deleteQuery = "DELETE FROM " + TASK_TABLE_NAME
+                + " WHERE " + TITLE
+                + " = \"" + taskTitle
+                + "\"";
+
+        return deleteQuery;
+    }
+
+    public static String completeTaskQuery(String taskTitle){
+        String completeQuery = "UPDATE " + TASK_TABLE_NAME
+                + " SET  " + STATUS + "=" + "\"" + ValidStatus.COMPLETED + "\" "
+                + "WHERE " + TITLE
+                + " = \"" + taskTitle
+                + "\"";
+
+        return completeQuery;
+    }
+
+    public static String showTasksOnAppLaunch(){
+        String readQuery =  "SELECT * FROM "
+                            +TASK_TABLE_NAME
+                            +" WHERE " + STATUS + " ="
+                            +"\"" + ValidStatus.CREATED + "\""
+                            +" ORDER BY " + DUE_DATE;
+
+        return readQuery;
+    }
 }

@@ -1,11 +1,13 @@
 package com.flipkart.todolist.fragments;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 //import android.support.v4.app.Fragment;
 import android.app.Fragment;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.async_tasks.ViewTaskList;
 import com.flipkart.todolist.adapters.ListViewAdapter;
+import com.flipkart.todolist.db.TaskTable;
 import com.flipkart.todolist.delegates.AsyncTaskCompletedListener;
 import com.flipkart.todolist.delegates.SwitchToAddTodoFragmentDelegate;
 import com.flipkart.todolist.entities.Task;
@@ -40,7 +43,10 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     private DbGateway dbGateway;
     private ListViewAdapter listViewAdapter;
     private ArrayList<Task> tasks;
+    private SQLiteDatabase database;
     private Task task;
+    private final String customTaskDelete = "delete";
+    private final String customTaskComplete = "complete";
 
     public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
          this.delegate = delegate;
@@ -97,11 +103,20 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+//                Define actions on click on each item defined in Custom Action Bar
                 switch (item.getItemId()) {
                     case R.id.delete:
-                        deleteTask(item);
+                        executeCustomAction(customTaskDelete);
+                        showTasksInUI();
+                        return true;
+                    case R.id.completeTask:
+                        executeCustomAction(customTaskComplete);
+                        showTasksInUI();
+                        return true;
+
+                    default:
+                        return false;
                 }
-                return false;
             }
 
             @Override
@@ -111,16 +126,56 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         });
     }
 
-    private void deleteTask(MenuItem item) {
-        
+    private String getTaskTitle(View view) {
+
+        TextView title = (TextView) view.findViewById(R.id.taskTitle);
+        String  taskTitle = title.getText().toString();
+        Log.i(TAG, "The Task Title is: " + taskTitle);
+        return  taskTitle;
     }
 
+    private void executeCustomAction(String actionType){
+        SparseBooleanArray selectedItemPositions = taskListView.getCheckedItemPositions();
+        for (int i = 0; i < taskListView.getCount(); i++) {
+            if (selectedItemPositions.get(i)) {
+                View view = taskListView.getChildAt(i);
+                String taskTitle = getTaskTitle(view);
+                switch (actionType){
+                    case customTaskDelete:
+                        deleteTaskWithTitle(taskTitle);
+                        break;
+                    case customTaskComplete:
+                        completeTaskWithTitle(taskTitle);
+                        break;
+                }
+            }
+        }
+    }
+
+    private void completeTaskWithTitle(String taskTitle) {
+        String updateTaskStatusToCompleted = TaskTable.completeTaskQuery(taskTitle);
+        executeDbQuery(updateTaskStatusToCompleted);
+    }
+
+    private void deleteTaskWithTitle(String taskTitle) {
+
+        String deleteQuery = TaskTable.deleteTaskQuery(taskTitle);
+        executeDbQuery(deleteQuery);
+    }
+
+    private void executeDbQuery(String query){
+
+        database = dbGateway.getWritableDatabase();
+        database.execSQL(query);
+    }
     private void setWidgets(View fragmentView) {
 
         taskListView = (ListView) fragmentView.findViewById(R.id.taskListView);
 //        Adding Custom Action Bar using multi choice model listener
         taskListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listViewAdapter = new ListViewAdapter(getContext(), new ArrayList<Task>());
+        taskListView.setClickable(true);
+        taskListView.setAdapter(listViewAdapter);
 
         taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
     }
@@ -149,31 +204,22 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     }
 
     private void setTaskListViewListener() {
-        Log.i(TAG,"Inside setTaskListViewListener");
+
+        Log.i(TAG, "Inside setTaskListViewListener");
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Inside onItemClick on list view");
                 TextView title = (TextView) view.findViewById(R.id.taskTitle);
-//                TextView dueDate = (TextView) view.findViewById(R.id.dueDateTextView);
-//                TextView dueTime = (TextView) view.findViewById(R.id.dueTimeTextView);
-//                TextView notes = (TextView) view.findViewById(R.id.editTaskNotes);
                 String taskTitle = title.getText().toString();
-//                String taskDueDate = dueDate.getText().toString();
-//                String taskDueTime = dueTime.getText().toString();
-//                String taskNotes = notes.getText().toString();
-//                task = new Task(taskTitle, taskNotes, taskDueDate,taskDueTime, 1);
                 goToTaskDetailFragment();
             }
         });
-        taskListView.setClickable(true);
-        taskListView.setAdapter(listViewAdapter);
     }
 
     public void goToTaskDetailFragment() {
 
         if (delegate != null) {
-
             delegate.switchFragment();
         }
     }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.db.TaskTable;
 import com.flipkart.todolist.delegates.AsyncTaskCompletedListener;
 
 import static com.flipkart.todolist.db.TaskTable.DUE_DATE;
@@ -35,7 +36,7 @@ public class ViewTaskList extends AsyncTask<String,Void,Cursor> {
     protected Cursor doInBackground(String... params) {
 
         database = dbGateway.getWritableDatabase();
-        String query = "SELECT * FROM " + TASK_TABLE_NAME +" order by " + DUE_DATE;
+        String query = TaskTable.showTasksOnAppLaunch();
         Log.i(TAG, "Query fired : " + query);
         cursor = database.rawQuery(query,null);
         return cursor;
