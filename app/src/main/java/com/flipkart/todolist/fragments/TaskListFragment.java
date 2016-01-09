@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.R;
@@ -47,6 +48,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     private Task task;
     private final String customTaskDelete = "delete";
     private final String customTaskComplete = "complete";
+    private ActionMode actionMode;
 
     public void setDelegate(SwitchToAddTodoFragmentDelegate delegate) {
          this.delegate = delegate;
@@ -93,6 +95,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 //                Define the menu layout for the action bar
                 mode.getMenuInflater().inflate(R.menu.custom_action_bar, menu);
+                actionMode = mode;
                 return true;
             }
 
@@ -109,6 +112,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
                         executeCustomAction(customTaskDelete);
                         showTasksInUI();
                         return true;
+
                     case R.id.completeTask:
                         executeCustomAction(customTaskComplete);
                         showTasksInUI();
@@ -121,7 +125,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-
+                actionMode = null;
             }
         });
     }
@@ -134,10 +138,21 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         return  taskTitle;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        //Destroy action mode
+        if(actionMode != null)
+            actionMode.finish();
+    }
+
     private void executeCustomAction(String actionType){
+        int numOfSelectedTasks = 0;
         SparseBooleanArray selectedItemPositions = taskListView.getCheckedItemPositions();
         for (int i = 0; i < taskListView.getCount(); i++) {
             if (selectedItemPositions.get(i)) {
+                numOfSelectedTasks = numOfSelectedTasks + 1;
                 View view = taskListView.getChildAt(i);
                 String taskTitle = getTaskTitle(view);
                 switch (actionType){
@@ -150,6 +165,20 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
                 }
             }
         }
+        switch (actionType) {
+            case customTaskDelete:
+                showToastNotification("Tasks Deleted : " + String.valueOf(numOfSelectedTasks));
+                break;
+            case customTaskComplete:
+                showToastNotification("Tasks Marked Complete :" + String.valueOf(numOfSelectedTasks));
+                break;
+        }
+    }
+
+    private void showToastNotification(String msg) {
+
+        Toast message = Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT);
+        message.show();
     }
 
     private void completeTaskWithTitle(String taskTitle) {
