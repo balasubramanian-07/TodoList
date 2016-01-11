@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.delegates.SwitchToAddTodoFragmentDelegate;
@@ -41,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.main_layout,  taskListFragment, TASK_LIST_FRAGMENT_TAG);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

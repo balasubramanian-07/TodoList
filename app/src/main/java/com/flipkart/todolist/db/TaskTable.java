@@ -30,8 +30,9 @@ public final class TaskTable {
     }
 
     public static String deleteTaskQuery(String taskTitle) {
-        String deleteQuery = "DELETE FROM " + TASK_TABLE_NAME
-                + " WHERE " + TITLE
+        String deleteQuery = "UPDATE " + TASK_TABLE_NAME
+                + " SET  " + STATUS + "=" + "\"" + ValidStatus.SOFT_DELETED + "\" "
+                + "WHERE " + TITLE
                 + " = \"" + taskTitle
                 + "\"";
 

@@ -16,7 +16,7 @@
         android:ems="10"
         android:id="@+id/taskDueDate"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/taskTitle" />
+         />
 
     <TextView
         android:layout_width="wrap_content"
