@@ -101,6 +101,8 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
+                Log.i(TAG, "Inside onPrepare");
                 return false;
             }
 
@@ -110,11 +112,13 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
                 switch (item.getItemId()) {
                     case R.id.delete:
                         executeCustomAction(customTaskDelete);
+                        mode.finish();
                         showTasksInUI();
                         return true;
 
                     case R.id.completeTask:
                         executeCustomAction(customTaskComplete);
+                        mode.finish();
                         showTasksInUI();
                         return true;
 
@@ -125,6 +129,8 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+
+                Log.i(TAG,"onDestroyAction mode called");
                 actionMode = null;
             }
         });
@@ -203,7 +209,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 //        Adding Custom Action Bar using multi choice model listener
         taskListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listViewAdapter = new ListViewAdapter(getContext(), new ArrayList<Task>());
-        taskListView.setClickable(true);
+//        taskListView.setClickable(true);
         taskListView.setAdapter(listViewAdapter);
 
         taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
