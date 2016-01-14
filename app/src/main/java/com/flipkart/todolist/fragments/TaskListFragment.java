@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
@@ -33,6 +34,8 @@ import com.flipkart.todolist.entities.Task;
 import com.flipkart.todolist.mappers.TaskMapper;
 
 import java.util.ArrayList;
+
+import static com.flipkart.todolist.Constants.APP_LAUNCHER_VIEW_QUERY_TAG;
 
 public class TaskListFragment extends Fragment implements AsyncTaskCompletedListener<Cursor> {
 
@@ -225,7 +228,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
         viewTaskList = new ViewTaskList(dbGateway, getActivity().getApplicationContext());
         viewTaskList.setCallback(this);
-        viewTaskList.execute();
+        viewTaskList.execute(APP_LAUNCHER_VIEW_QUERY_TAG);
     }
 
     private void setAddTaskButtonListener() {

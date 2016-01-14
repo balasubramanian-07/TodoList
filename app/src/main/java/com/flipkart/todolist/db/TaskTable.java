@@ -1,5 +1,7 @@
 package com.flipkart.todolist.db;
 
+import com.flipkart.todolist.Constants;
+
 public final class TaskTable {
     public static final String TASK_TABLE_NAME = "tasks";
     public static final String ID = "_id";
@@ -10,6 +12,7 @@ public final class TaskTable {
     public static final String DUE_TIME = "due_time";
     public static final String STATUS = "status";
     public static final String CREATED_AT = "created_at";
+
     public enum ValidStatus {
         CREATED("created"), COMPLETED("completed"), SOFT_DELETED("soft_deleted");
 
@@ -27,6 +30,23 @@ public final class TaskTable {
         public String toString() {
             return getValue();
         }
+    }
+
+    public static String sortTasksByPriority() {
+
+        String sortOnPriorityQuery = selectQueryForStatusCreated();
+        sortOnPriorityQuery = sortOnPriorityQuery + PRIORITY;
+        return sortOnPriorityQuery;
+    }
+
+    private static String selectQueryForStatusCreated(){
+        String readQuery =  "SELECT * FROM "
+                +TASK_TABLE_NAME
+                +" WHERE " + STATUS + " ="
+                +"\"" + ValidStatus.CREATED + "\""
+                +" ORDER BY ";
+
+        return readQuery;
     }
 
     public static String deleteTaskQuery(String taskTitle) {
