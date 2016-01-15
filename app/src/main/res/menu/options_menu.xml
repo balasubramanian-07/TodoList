@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:title="SEARCH"
-        android:id="@+id/launchSearchMenuItem"
+        android:id="@+id/launchDeletedTaskshMenuItem"
         />
     <item
         android:title="SORT"

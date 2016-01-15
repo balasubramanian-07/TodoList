@@ -1,5 +1,7 @@
 package com.flipkart.todolist.fragments;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,9 @@ import com.flipkart.todolist.mappers.TaskMapper;
 import java.util.ArrayList;
 
 import static com.flipkart.todolist.Constants.APP_LAUNCHER_VIEW_QUERY_TAG;
+import static com.flipkart.todolist.Constants.DELETED_TASK_LIST_FRAGMENT;
+import static com.flipkart.todolist.Constants.SORT_BY_PRIORITY;
+import static com.flipkart.todolist.Constants.TASK_LIST_FRAGMENT_TAG;
 
 public class TaskListFragment extends Fragment implements AsyncTaskCompletedListener<Cursor> {
 
@@ -79,6 +85,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         setListeners();
         showTasksInUI();
         setCustomActionBar();
+        setHasOptionsMenu(true);
 
         return fragmentView;
     }
@@ -133,18 +140,29 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
             @Override
             public void onDestroyActionMode(ActionMode mode) {
 
-                Log.i(TAG,"onDestroyAction mode called");
+                Log.i(TAG, "onDestroyAction mode called");
                 actionMode = null;
             }
         });
     }
 
-    private String getTaskTitle(View view) {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
+    }
 
-        TextView title = (TextView) view.findViewById(R.id.taskTitle);
-        String  taskTitle = title.getText().toString();
-        Log.i(TAG, "The Task Title is: " + taskTitle);
-        return  taskTitle;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.launchDeletedTaskshMenuItem:
+                switchToDeleteTaskFragment();
+                return true;
+            case R.id.sortTaskMenuItem:
+                searchTasks(SORT_BY_PRIORITY);
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -154,6 +172,22 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         //Destroy action mode
         if(actionMode != null)
             actionMode.finish();
+    }
+
+
+    private void searchTasks(String param) {
+
+        ViewTaskList viewTaskList = new ViewTaskList(dbGateway,getActivity().getApplicationContext());
+        viewTaskList.setCallback(this);
+        viewTaskList.execute(param);
+    }
+
+    private String getTaskTitle(View view) {
+
+        TextView title = (TextView) view.findViewById(R.id.taskTitle);
+        String  taskTitle = title.getText().toString();
+        Log.i(TAG, "The Task Title is: " + taskTitle);
+        return  taskTitle;
     }
 
     private void executeCustomAction(String actionType){
@@ -214,7 +248,6 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         listViewAdapter = new ListViewAdapter(getContext(), new ArrayList<Task>());
 //        taskListView.setClickable(true);
         taskListView.setAdapter(listViewAdapter);
-
         taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
     }
 
@@ -226,9 +259,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
     private void showTasksInUI() {
 
-        viewTaskList = new ViewTaskList(dbGateway, getActivity().getApplicationContext());
-        viewTaskList.setCallback(this);
-        viewTaskList.execute(APP_LAUNCHER_VIEW_QUERY_TAG);
+        searchTasks(APP_LAUNCHER_VIEW_QUERY_TAG);
     }
 
     private void setAddTaskButtonListener() {
@@ -260,6 +291,18 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         if (delegate != null) {
             delegate.switchFragment();
         }
+    }
+
+    private void switchToDeleteTaskFragment(){
+
+        FragmentManager fragmentManager = getFragmentManager();
+        TaskListFragment taskListFragment = (TaskListFragment) fragmentManager.findFragmentByTag(TASK_LIST_FRAGMENT_TAG);
+        DeletedTasksFragment deletedTasksFragment = new DeletedTasksFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.remove(taskListFragment);
+        transaction.add(deletedTasksFragment, DELETED_TASK_LIST_FRAGMENT);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
