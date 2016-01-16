@@ -179,6 +179,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
         ViewTaskList viewTaskList = new ViewTaskList(dbGateway,getActivity().getApplicationContext());
         viewTaskList.setCallback(this);
+        Log.i(TAG, "Executing app launch query :" + param);
         viewTaskList.execute(param);
     }
 
@@ -300,7 +301,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         DeletedTasksFragment deletedTasksFragment = new DeletedTasksFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.remove(taskListFragment);
-        transaction.add(deletedTasksFragment, DELETED_TASK_LIST_FRAGMENT);
+        transaction.add(R.id.main_layout,deletedTasksFragment, DELETED_TASK_LIST_FRAGMENT);
         transaction.addToBackStack(null);
         transaction.commit();
     }

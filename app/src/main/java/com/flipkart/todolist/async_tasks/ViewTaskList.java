@@ -13,6 +13,7 @@ import com.flipkart.todolist.db.TaskTable;
 import com.flipkart.todolist.delegates.AsyncTaskCompletedListener;
 
 import static com.flipkart.todolist.Constants.APP_LAUNCHER_VIEW_QUERY_TAG;
+import static com.flipkart.todolist.Constants.SHOW_DELETED_TASKS;
 import static com.flipkart.todolist.Constants.SORT_BY_PRIORITY;
 import static com.flipkart.todolist.db.TaskTable.DUE_DATE;
 import static com.flipkart.todolist.db.TaskTable.TASK_TABLE_NAME;
@@ -43,9 +44,15 @@ public class ViewTaskList extends AsyncTask<String,Void,Cursor> {
         switch (params[0]){
             case APP_LAUNCHER_VIEW_QUERY_TAG:
                 query = TaskTable.showTasksOnAppLaunch();
+                break;
 
             case SORT_BY_PRIORITY:
                 query = TaskTable.sortTasksByPriority();
+                break;
+
+            case SHOW_DELETED_TASKS:
+                query = TaskTable.showRecycledBinTasks();
+                break;
 
             default:
 

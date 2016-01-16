@@ -42,6 +42,16 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         // TODO: Need to handle case when device is rotated
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if( getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStack();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     private void loadTodoListFragment() {
         TaskListFragment taskListFragment = new TaskListFragment();
         taskListFragment.setDelegate(this);

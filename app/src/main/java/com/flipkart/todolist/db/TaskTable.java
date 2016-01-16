@@ -1,5 +1,7 @@
 package com.flipkart.todolist.db;
 
+import android.util.Log;
+
 import com.flipkart.todolist.Constants;
 
 public final class TaskTable {
@@ -30,13 +32,25 @@ public final class TaskTable {
         public String toString() {
             return getValue();
         }
-    }
 
+    }
     public static String sortTasksByPriority() {
 
         String sortOnPriorityQuery = selectQueryForStatusCreated();
         sortOnPriorityQuery = sortOnPriorityQuery + PRIORITY;
         return sortOnPriorityQuery;
+    }
+
+    public static String showRecycledBinTasks() {
+
+        String showRecycledTasks =
+                "SELECT * FROM "
+                +TASK_TABLE_NAME
+                +" WHERE " + STATUS + " ="
+                +"\"" + ValidStatus.SOFT_DELETED + "\""
+                +" ORDER BY " + DUE_DATE;
+
+        return  showRecycledTasks;
     }
 
     private static String selectQueryForStatusCreated(){
@@ -70,12 +84,10 @@ public final class TaskTable {
     }
 
     public static String showTasksOnAppLaunch(){
-        String readQuery =  "SELECT * FROM "
-                            +TASK_TABLE_NAME
-                            +" WHERE " + STATUS + " ="
-                            +"\"" + ValidStatus.CREATED + "\""
-                            +" ORDER BY " + DUE_DATE;
 
+        String readQuery =  selectQueryForStatusCreated() + DUE_DATE;
+
+        Log.i("Inside App launch query", readQuery);
         return readQuery;
     }
 }

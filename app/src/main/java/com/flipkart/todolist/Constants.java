@@ -10,4 +10,5 @@ public final class Constants {
     public static final String APP_LAUNCHER_VIEW_QUERY_TAG = "view_created_tasks";
     public static final String SORT_BY_PRIORITY = "sort_by_priority";
     public static final String DELETED_TASK_LIST_FRAGMENT = "DTF";
+    public static final String SHOW_DELETED_TASKS = "view_deleted_tasks";
 }
