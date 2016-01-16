@@ -202,20 +202,14 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
                 switch (actionType){
                     case customTaskDelete:
                         deleteTaskWithTitle(taskTitle);
+                        showToastNotification("Tasks Deleted : " + String.valueOf(numOfSelectedTasks));
                         break;
                     case customTaskComplete:
                         completeTaskWithTitle(taskTitle);
+                        showToastNotification("Tasks Marked Complete : " + String.valueOf(numOfSelectedTasks));
                         break;
                 }
             }
-        }
-        switch (actionType) {
-            case customTaskDelete:
-                showToastNotification("Tasks Deleted : " + String.valueOf(numOfSelectedTasks));
-                break;
-            case customTaskComplete:
-                showToastNotification("Tasks Marked Complete : " + String.valueOf(numOfSelectedTasks));
-                break;
         }
     }
 

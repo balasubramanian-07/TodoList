@@ -15,8 +15,30 @@ public final class TaskTable {
     public static final String STATUS = "status";
     public static final String CREATED_AT = "created_at";
 
+    public static String permanentDeleteTaskQuery(String taskTitle) {
+
+        String deleteQuery = "UPDATE " + TASK_TABLE_NAME
+                + " SET  " + STATUS + "=" + "\"" + ValidStatus.DELETED + "\" "
+                + "WHERE " + TITLE
+                + " = \"" + taskTitle
+                + "\"";
+
+        return deleteQuery;
+    }
+
+    public static String undoDeleteTaskQuery(String taskTitle) {
+
+        String undoDeleteQuery = "UPDATE " + TASK_TABLE_NAME
+                + " SET  " + STATUS + "=" + "\"" + ValidStatus.CREATED + "\" "
+                + "WHERE " + TITLE
+                + " = \"" + taskTitle
+                + "\"";
+
+        return undoDeleteQuery;
+    }
+
     public enum ValidStatus {
-        CREATED("created"), COMPLETED("completed"), SOFT_DELETED("soft_deleted");
+        CREATED("created"), COMPLETED("completed"), SOFT_DELETED("soft_deleted"), DELETED("deleted");
 
         private final String value;
 

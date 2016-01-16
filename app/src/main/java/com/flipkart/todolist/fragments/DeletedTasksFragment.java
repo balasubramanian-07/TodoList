@@ -3,9 +3,11 @@ package com.flipkart.todolist.fragments;
 
 import android.app.FragmentManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.R;
@@ -21,6 +25,7 @@ import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.adapters.ListViewAdapter;
 import com.flipkart.todolist.async_tasks.ViewTaskList;
 import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.db.TaskTable;
 import com.flipkart.todolist.delegates.AsyncTaskCompletedListener;
 import com.flipkart.todolist.entities.Task;
 import com.flipkart.todolist.mappers.TaskMapper;
@@ -40,6 +45,9 @@ public class DeletedTasksFragment extends Fragment implements AsyncTaskCompleted
     private DbGateway dbGateway;
     private ArrayList<Task> tasks;
     private ListViewAdapter listViewAdapter;
+    private SQLiteDatabase database;
+    private final String customTaskDeletePermanent = "permanently_delete";
+    private final String customTaskUndoDelete = "move_delete_to_created";
 
     public DeletedTasksFragment() {
         // Required empty public constructor
@@ -73,11 +81,15 @@ public class DeletedTasksFragment extends Fragment implements AsyncTaskCompleted
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
 
+                final int selectedItemCount = deletedTaskListView.getCheckedItemCount();
+                mode.setTitle("Selection: " + selectedItemCount + " items");
             }
 
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
+
+                mode.getMenuInflater().inflate(R.menu.custom_action_bar, menu);
+                return true;
             }
 
             @Override
@@ -87,7 +99,23 @@ public class DeletedTasksFragment extends Fragment implements AsyncTaskCompleted
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
+
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        executeCustomAction(customTaskDeletePermanent);
+                        mode.finish();
+                        showDeletedTasksInUI();
+                        return true;
+
+                    case R.id.completeTask:
+                        executeCustomAction(customTaskUndoDelete);
+                        mode.finish();
+                        showDeletedTasksInUI();
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
 
             @Override
@@ -97,6 +125,60 @@ public class DeletedTasksFragment extends Fragment implements AsyncTaskCompleted
         });
     }
 
+    private void executeCustomAction(String actionType) {
+
+        int numOfSelectedTasks = 0;
+        SparseBooleanArray selectedItemPositions = deletedTaskListView.getCheckedItemPositions();
+        for (int i = 0; i < deletedTaskListView.getCount(); i++) {
+            if (selectedItemPositions.get(i)) {
+                numOfSelectedTasks = numOfSelectedTasks + 1;
+                View view = deletedTaskListView.getChildAt(i);
+                String taskTitle = getTaskTitle(view);
+                switch (actionType){
+                    case customTaskDeletePermanent:
+                        permanentDeleteTaskWithTitle(taskTitle);
+                        showToastNotification("Tasks Permanently Deleted : " + String.valueOf(numOfSelectedTasks));
+                        break;
+                    case customTaskUndoDelete:
+                        undoDeletedTaskWithTitle(taskTitle);
+                        showToastNotification("Tasks Recovered : " + String.valueOf(numOfSelectedTasks));
+                        break;
+                }
+            }
+        }
+    }
+
+    private String getTaskTitle(View view) {
+
+        TextView title = (TextView) view.findViewById(R.id.taskTitle);
+        String  taskTitle = title.getText().toString();
+        Log.i(TAG, "The Task Title is: " + taskTitle);
+        return  taskTitle;
+    }
+
+    private void permanentDeleteTaskWithTitle(String taskTitle) {
+
+        String deleteQuery = TaskTable.permanentDeleteTaskQuery(taskTitle);
+        executeDbQuery(deleteQuery);
+    }
+
+    private void undoDeletedTaskWithTitle(String taskTitle) {
+
+        String deleteQuery = TaskTable.undoDeleteTaskQuery(taskTitle);
+        executeDbQuery(deleteQuery);
+    }
+
+    private void executeDbQuery(String query){
+
+        database = dbGateway.getWritableDatabase();
+        database.execSQL(query);
+    }
+
+    private void showToastNotification(String msg) {
+
+        Toast message = Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT);
+        message.show();
+    }
 
     private void showDeletedTasksInUI() {
 
