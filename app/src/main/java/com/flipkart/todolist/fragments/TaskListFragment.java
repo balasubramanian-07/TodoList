@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
     private static final String TAG = "TaskListFragment";
     private SwitchToAddTodoFragmentDelegate delegate;
-    private Button taskDetailButton;
+    private ImageButton FAB;
     private ListView taskListView;
     private ViewTaskList viewTaskList;
     private DbGateway dbGateway;
@@ -243,7 +244,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         listViewAdapter = new ListViewAdapter(getContext(), new ArrayList<Task>());
 //        taskListView.setClickable(true);
         taskListView.setAdapter(listViewAdapter);
-        taskDetailButton = (Button) fragmentView.findViewById(R.id.taskDetailButton);
+        FAB = (ImageButton) fragmentView.findViewById(R.id.imageButton);
     }
 
     private void setListeners() {
@@ -259,7 +260,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
     private void setAddTaskButtonListener() {
 
-        taskDetailButton.setOnClickListener(new View.OnClickListener() {
+        FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToTaskDetailFragment();
