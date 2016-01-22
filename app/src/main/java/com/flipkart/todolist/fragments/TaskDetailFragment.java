@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flipkart.todolist.async_tasks.AddTask;
 import com.flipkart.todolist.db.DbGateway;
@@ -29,11 +31,8 @@ public class TaskDetailFragment extends Fragment {
     private TextView dueTime;
     private EditText taskTitle;
     private EditText taskNotes;
-    private Button saveTask ;
-    private Button cancelTask;
-    private Button deleteTask;
-    private Spinner setPriority;
-
+    private ImageButton FABSaveTask;
+    private EditText priority;
     private Bundle bundle;
     private AddTask addTask;
     private DbGateway dbGateway;
@@ -63,30 +62,50 @@ public class TaskDetailFragment extends Fragment {
 
     private void setListeners() {
         setSaveButtonListener();
-        setCancelButtonListener();
+//        setCancelButtonListener();
         setDatePickerListener();
         setTimePickerListener();
     }
 
     private void setSaveButtonListener() {
-        saveTask.setOnClickListener(new View.OnClickListener() {
+        FABSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title = taskTitle.getText().toString();
                 String notes = taskNotes.getText().toString();
                 String date = dueDate.getText().toString();
                 String time = dueTime.getText().toString();
+                String prio = priority.getText().toString();
+                task = new Task(title, notes, date, time);
 
-
-                task = new Task(title, notes, date,time, 1);
-
+                if(validateTaskInputs(task, prio)){
 //              Using Async task to insert/update to db
-                insertTaskInDb(task);
-
-                android.app.FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
-            }
+                    int taskpriority = Integer.parseInt(priority.getText().toString());
+                    task.setPriority(taskpriority);
+                    insertTaskInDb(task);
+                    android.app.FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.popBackStack();
+                }
+           }
         });
+    }
+
+    private boolean validateTaskInputs(Task task, String priority) {
+
+        if(task.getTitle().isEmpty()){
+            showToastNotification("Title is mandatory parameter: Please Enter Task Title");
+            return false;
+        }
+        if(task.getDate().isEmpty() || task.getDate() == null){
+            showToastNotification("Date is mandatory parameter: Please Enter Date");
+            return false;
+        }
+
+        if(priority.isEmpty() || priority == null){
+            showToastNotification("Enter valid integer Priority: 0/1/2");
+            return false;
+        }
+        return true;
     }
 
     private void setTimePickerListener() {
@@ -106,20 +125,10 @@ public class TaskDetailFragment extends Fragment {
             public void onClick(View v) {
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
                 datePickerFragment.setTextView(dueDate);
-                datePickerFragment.show( getFragmentManager(), "datePicker");
+                datePickerFragment.show(getFragmentManager(), "datePicker");
             }
         });
 
-    }
-
-    private void setCancelButtonListener() {
-        cancelTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               android.app.FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
-            }
-        });
     }
 
     private void insertTaskInDb(Task task) {
@@ -132,7 +141,13 @@ public class TaskDetailFragment extends Fragment {
         dueTime = (TextView) fragView.findViewById(R.id.dueTimeTextView);
         taskTitle = (EditText) fragView.findViewById(R.id.editTaskTitle);
         taskNotes = (EditText) fragView.findViewById(R.id.editTaskNotes);
-        saveTask =  (Button) fragView.findViewById(R.id.saveTask);
-        cancelTask =  (Button) fragView.findViewById(R.id.cancelTask);
+        FABSaveTask = (ImageButton) fragView.findViewById(R.id.imageButtonSaveTask);
+        priority = (EditText) fragView.findViewById(R.id.priorityEditText);
+    }
+
+    private void showToastNotification(String msg) {
+
+        Toast message = Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT);
+        message.show();
     }
 }

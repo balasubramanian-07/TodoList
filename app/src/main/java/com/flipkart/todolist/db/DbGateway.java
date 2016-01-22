@@ -19,18 +19,9 @@ public final class DbGateway extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG,"Create table : " + TASK_TABLE_NAME);
+        Log.i(TAG, "Create table : " + TASK_TABLE_NAME);
 
-        String query = "CREATE TABLE " + TASK_TABLE_NAME
-                + "(" + ID + " INTEGER PRIMARY KEY"
-                + "," + TITLE + " TEXT NOT NULL"
-                + "," + NOTES + " TEXT NOT NULL"
-                + "," + DUE_DATE + " TEXT NOT NULL"
-                + "," + DUE_TIME + " TEXT NOT NULL"
-                + "," + PRIORITY + " INT NOT NULL"
-                + "," + STATUS + " TEXT NOT NULL"
-                + "," + CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP"
-                + ")";
+        String query = TaskTable.createTableQuery();
         db.execSQL(query);
     }
 

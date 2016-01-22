@@ -15,6 +15,20 @@ public final class TaskTable {
     public static final String STATUS = "status";
     public static final String CREATED_AT = "created_at";
 
+
+    public static String createTableQuery(){
+        return "CREATE TABLE " + TASK_TABLE_NAME
+                + "(" + ID + " INTEGER PRIMARY KEY"
+                + "," + TITLE + " TEXT NOT NULL"
+                + "," + NOTES + " TEXT NOT NULL"
+                + "," + DUE_DATE + " TEXT NOT NULL"
+                + "," + DUE_TIME + " TEXT NOT NULL"
+                + "," + PRIORITY + " INT NOT NULL"
+                + "," + STATUS + " TEXT NOT NULL"
+                + "," + CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP"
+                + ")";
+    }
+
     public static String permanentDeleteTaskQuery(String taskTitle) {
 
         String deleteQuery = "UPDATE " + TASK_TABLE_NAME

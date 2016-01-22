@@ -14,12 +14,11 @@ public class Task implements Serializable {
     private int priority;
     private Integer task_id;
 
-    public Task(String title, String notes, String dueDate,String dueTime, int priority) {
+    public Task(String title, String notes, String dueDate,String dueTime) {
         this.title = title;
         this.notes = notes;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
-        this.priority = priority;
     }
 
     public String getTitle() {
@@ -40,6 +39,11 @@ public class Task implements Serializable {
     public int getPriority() {
 
         return priority;
+    }
+
+    public void setPriority(int priority) {
+
+        this.priority =  priority;
     }
 
     public Integer getTask_id() {
