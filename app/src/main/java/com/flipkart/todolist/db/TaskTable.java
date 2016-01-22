@@ -89,6 +89,15 @@ public final class TaskTable {
         return  showRecycledTasks;
     }
 
+    public static String selectTaskByTitleQuery(String title){
+
+        String selectQuery = "SELECT * FROM "
+                +TASK_TABLE_NAME
+                +" WHERE " + TITLE + " = "
+                +"\"" + title +"\" LIMIT 1";
+        return selectQuery;
+    }
+
     private static String selectQueryForStatusCreated(){
         String readQuery =  "SELECT * FROM "
                 +TASK_TABLE_NAME

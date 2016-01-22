@@ -6,11 +6,11 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:textColor="@color/colorPrimary"
+        android:layout_height="35dp"
+        android:textColor="@color/colorAccent"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Recycle Bin"
-        android:textSize="15dp"
+        android:textSize="25dp"
         android:id="@+id/recycledBinTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/deletedTasksListview"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/recycledBinTextView"/>
+        android:layout_below="@+id/recycledBinTextView" />
 
 </RelativeLayout>

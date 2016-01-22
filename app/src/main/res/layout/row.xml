@@ -32,18 +32,18 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:gravity="top"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="15dp"
         android:textColor="#080f1d"
-        android:id="@+id/taskPriority"
+        android:id="@+id/taskPriorityEditText"
         android:layout_weight="0.03"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
@@ -56,11 +56,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Priority:  "
-        android:textSize="15dp"
+        android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:textColor="#0055ff"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/taskPriority" />
+        android:layout_toStartOf="@+id/taskPriorityEditText"
+        android:layout_alignBaseline="@id/taskPriorityEditText"/>
 
 </RelativeLayout>

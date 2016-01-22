@@ -1,11 +1,13 @@
 package com.flipkart.todolist.async_tasks;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.flipkart.todolist.db.DbGateway;
+import com.flipkart.todolist.db.TaskTable;
 import com.flipkart.todolist.entities.Task;
 
 import static com.flipkart.todolist.db.TaskTable.*;
@@ -41,15 +43,30 @@ public class AddTask extends AsyncTask<String,Void,Void> {
         row.put(DUE_TIME, String.valueOf(task.getDate()));
         row.put(PRIORITY, task.getPriority());
         row.put(STATUS, String.valueOf(ValidStatus.CREATED));
-        if (task.getTask_id() == null){
-            Log.i(TAG, "Inserting new row in database");
+
+        upsert(row, task.getTitle());
+//        if (task.getTask_id() == null){
+//            Log.i(TAG, "Inserting new row in database");
+//            database.insert(TASK_TABLE_NAME,null,row);
+//        }else {
+//            String whereClause = "_id" + task.getTask_id();
+//            Log.i(TAG, "updating row in database : " + task.getTask_id());
+//            database.update(TASK_TABLE_NAME, row,whereClause, null);
+//        }
+      return null;
+    }
+
+    private void upsert(ContentValues row, String title) {
+
+        String selectQuery;
+        selectQuery = TaskTable.selectTaskByTitleQuery(title);
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if(cursor.getCount() == 0){
             database.insert(TASK_TABLE_NAME,null,row);
-        }else {
-            String whereClause = "_id" + task.getTask_id();
-            Log.i(TAG, "updating row in database : " + task.getTask_id());
+        }else{
+            String whereClause = TaskTable.TITLE + "= " + "\"" + title + "\"";
             database.update(TASK_TABLE_NAME, row,whereClause, null);
         }
-      return null;
     }
 
 

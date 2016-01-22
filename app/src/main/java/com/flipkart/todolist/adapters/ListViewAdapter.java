@@ -52,7 +52,7 @@ public class ListViewAdapter extends BaseAdapter {
         ViewHolder viewHolder = (ViewHolder) mainView.getTag();
         viewHolder.taskTitle.setText(task.getTitle());
         viewHolder.taskDueDate.setText(task.getDate());
-//        viewHolder.taskPriority.setText(task.getPriority());
+        viewHolder.taskPriority.setText(String.valueOf(task.getPriority()));
 
         return mainView;
     }
@@ -64,7 +64,7 @@ public class ListViewAdapter extends BaseAdapter {
         ViewHolder viewHolder = new ViewHolder();
         viewHolder.taskTitle = (TextView) view.findViewById(R.id.taskTitle);
         viewHolder.taskDueDate = (TextView) view.findViewById(R.id.taskDueDate);
-        viewHolder.taskPriority = (TextView) view.findViewById(R.id.taskPriority);
+        viewHolder.taskPriority = (EditText) view.findViewById(R.id.taskPriorityEditText);
 
         view.setTag(viewHolder);
 
@@ -79,6 +79,6 @@ public class ListViewAdapter extends BaseAdapter {
 
         TextView taskTitle;
         TextView taskDueDate;
-        TextView taskPriority;
+        EditText taskPriority;
     }
 }
