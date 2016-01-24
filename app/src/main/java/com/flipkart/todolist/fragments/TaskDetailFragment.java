@@ -2,26 +2,31 @@ package com.flipkart.todolist.fragments;
 
 
 
-import android.app.Fragment;
-import android.os.Bundle;
+
 //import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 //import android.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.async_tasks.AddTask;
 import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.entities.Task;
+
+import static com.flipkart.todolist.Constants.SINGLE_TASK_TAG;
 
 public class TaskDetailFragment extends Fragment {
 
@@ -55,14 +60,30 @@ public class TaskDetailFragment extends Fragment {
 
         View fragView = inflater.inflate(R.layout.fragment_task_detail, container, false);
         setWidgets(fragView);
+        setWidgetsData();
         setListeners();
 
         return fragView;
     }
 
+    private void setWidgetsData() {
+
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            task = (Task) bundle.getSerializable(SINGLE_TASK_TAG);
+            Log.i(TAG, "Populating the Edit view for existing Task with id : " + task.getTask_id());
+            taskTitle.setText(task.getTitle());
+            taskNotes.setText(task.getNotes());
+            dueDate.setText(task.getDate());
+            dueTime.setText(task.getDueTime());
+            priority.setText(String.valueOf(task.getPriority()));
+        }else{
+            Log.i(TAG, "No Existing view to update");
+        }
+    }
+
     private void setListeners() {
         setSaveButtonListener();
-//        setCancelButtonListener();
         setDatePickerListener();
         setTimePickerListener();
     }
@@ -76,15 +97,30 @@ public class TaskDetailFragment extends Fragment {
                 String date = dueDate.getText().toString();
                 String time = dueTime.getText().toString();
                 String prio = priority.getText().toString();
-                task = new Task(title, notes, date, time);
+
+                if(task == null){
+                    task = new Task(title, notes, date, time);
+                }else{
+                    task.setPriority(Integer.parseInt(prio));
+                    task.setDueDate(date);
+                    task.setDueTime(time);
+                    task.setTitle(title);
+                    task.setNotes(notes);
+                }
 
                 if(validateTaskInputs(task, prio)){
 //              Using Async task to insert/update to db
+                    Log.i(TAG, "All validations complete : going to pop backstack");
                     int taskpriority = Integer.parseInt(priority.getText().toString());
                     task.setPriority(taskpriority);
                     insertTaskInDb(task);
-                    android.app.FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.popBackStack();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    if(fragmentManager.getBackStackEntryCount() == 0){
+                        getActivity().finish();
+                        showToastNotification("Tasks Updated : 1");
+                    }else{
+                        fragmentManager.popBackStack();
+                    }
                 }
            }
         });

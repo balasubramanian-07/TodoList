@@ -1,13 +1,16 @@
 package com.flipkart.todolist.fragments;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-//import android.support.v4.app.Fragment;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+//import android.app.Fragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -26,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flipkart.todolist.Constants;
+import com.flipkart.todolist.activities.DetailActivity;
 import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
@@ -41,7 +45,9 @@ import java.util.ArrayList;
 
 import static com.flipkart.todolist.Constants.APP_LAUNCHER_VIEW_QUERY_TAG;
 import static com.flipkart.todolist.Constants.DELETED_TASK_LIST_FRAGMENT;
+import static com.flipkart.todolist.Constants.SELECTED_TASK_POSITION_TAG;
 import static com.flipkart.todolist.Constants.SORT_BY_PRIORITY;
+import static com.flipkart.todolist.Constants.TASKS_ARRAYLIST_TAG;
 import static com.flipkart.todolist.Constants.TASK_LIST_FRAGMENT_TAG;
 
 public class TaskListFragment extends Fragment implements AsyncTaskCompletedListener<Cursor> {
@@ -73,7 +79,10 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
     @Override
     public void onResume() {
+
         super.onResume();
+        Log.i(TAG, "Inside onResume");
+        showTasksInUI();
     }
 
     @Nullable
@@ -81,6 +90,7 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View fragmentView = inflater.inflate(R.layout.fragment_task_list, null);
+        Log.i(TAG, "Inside onCreatView");
 
         setWidgets(fragmentView);
         setListeners();
@@ -248,7 +258,6 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 //        Adding Custom Action Bar using multi choice model listener
         taskListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listViewAdapter = new ListViewAdapter(getContext(), new ArrayList<Task>());
-//        taskListView.setClickable(true);
         taskListView.setAdapter(listViewAdapter);
         FAB = (ImageButton) fragmentView.findViewById(R.id.imageButton);
     }
@@ -281,9 +290,12 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Inside onItemClick on list view");
-                TextView title = (TextView) view.findViewById(R.id.taskTitle);
-                String taskTitle = title.getText().toString();
-                goToTaskDetailFragment();
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(TASKS_ARRAYLIST_TAG,tasks);
+                bundle.putInt(SELECTED_TASK_POSITION_TAG, position);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }
@@ -315,4 +327,6 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         listViewAdapter.setTasks(tasks);
         listViewAdapter.notifyDataSetChanged();
     }
+
+
 }

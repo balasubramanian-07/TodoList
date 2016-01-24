@@ -49,19 +49,21 @@
         android:gravity="center_horizontal"
         android:layout_marginEnd="46dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Priority:  "
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:layout_marginTop="10dp"
         android:textColor="#0055ff"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/taskPriorityEditText"
-        android:layout_alignBaseline="@id/taskPriorityEditText"/>
+        android:layout_alignBaseline="@id/taskPriorityEditText"
+        />
 
 </RelativeLayout>

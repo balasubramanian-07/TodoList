@@ -68,7 +68,7 @@
     <ImageButton
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/tick_mark_final"
+        android:src="@android:drawable/ic_menu_save"
         android:background="@drawable/circle"
         android:id="@+id/imageButtonSaveTask"
         android:layout_gravity="center_vertical|bottom"
@@ -94,7 +94,8 @@
         android:hint=" 0 / 1 / 2"
         android:layout_below="@+id/editTaskNotes"
         android:paddingLeft="25dp"
-        android:layout_alignStart="@+id/dueDateTextView" />
+        android:layout_alignStart="@+id/dueDateTextView"
+        />
 
 
 </RelativeLayout>

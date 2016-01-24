@@ -46,6 +46,27 @@ public class Task implements Serializable {
         this.priority =  priority;
     }
 
+    public void setDueDate(String dueDate) {
+
+        this.dueDate =  dueDate;
+    }
+
+    public void setDueTime(String dueTime) {
+
+        this.dueTime =  dueTime;
+    }
+
+    public void setTitle(String title){
+
+        this.title = title;
+    }
+
+    public void setNotes(String notes){
+
+        this.notes = notes;
+    }
+
+
     public Integer getTask_id() {
         return task_id;
     }
