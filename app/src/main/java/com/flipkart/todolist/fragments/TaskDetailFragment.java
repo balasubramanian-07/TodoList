@@ -4,29 +4,28 @@ package com.flipkart.todolist.fragments;
 
 
 //import android.app.Fragment;
-import android.support.v4.app.Fragment;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-//import android.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flipkart.todolist.Constants;
-import com.flipkart.todolist.async_tasks.AddTask;
-import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
+import com.flipkart.todolist.async_tasks.AddTask;
+import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.entities.Task;
 
 import static com.flipkart.todolist.Constants.SINGLE_TASK_TAG;
+
+//import android.app.FragmentManager;
 
 public class TaskDetailFragment extends Fragment {
 
@@ -101,7 +100,6 @@ public class TaskDetailFragment extends Fragment {
                 if(task == null){
                     task = new Task(title, notes, date, time);
                 }else{
-                    task.setPriority(Integer.parseInt(prio));
                     task.setDueDate(date);
                     task.setDueTime(time);
                     task.setTitle(title);
@@ -132,7 +130,9 @@ public class TaskDetailFragment extends Fragment {
             showToastNotification("Title is mandatory parameter: Please Enter Task Title");
             return false;
         }
-        if(task.getDate().isEmpty() || task.getDate() == null){
+        Log.i(TAG, "Task object get Date : " + task.getDate());
+        if(task.getDate().isEmpty() || task.getDate() == null || task.getDate().equalsIgnoreCase("Due Date")){
+            Log.i(TAG, "Task object get Date : " + task.getDate());
             showToastNotification("Date is mandatory parameter: Please Enter Date");
             return false;
         }

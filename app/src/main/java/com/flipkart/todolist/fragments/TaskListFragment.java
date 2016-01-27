@@ -331,6 +331,4 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
         listViewAdapter.setTasks(tasks);
         listViewAdapter.notifyDataSetChanged();
     }
-
-
 }
