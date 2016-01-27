@@ -91,11 +91,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/priorityEditText"
         android:paddingRight="10dp"
-        android:hint=" 0 / 1 / 2"
-        android:layout_below="@+id/editTaskNotes"
-        android:paddingLeft="25dp"
-        android:layout_alignStart="@+id/dueDateTextView"
-        />
+        android:hint=" 0/1"
+        android:layout_marginLeft="10dp"
+
+        android:layout_above="@+id/imageButtonSaveTask"
+        android:layout_alignStart="@+id/dueDateTextView" />
 
 
 </RelativeLayout>

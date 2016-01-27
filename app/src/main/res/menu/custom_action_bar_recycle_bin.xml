@@ -6,5 +6,5 @@
         />
     <item
         android:id="@+id/completeTask"
-        android:icon="@android:drawable/checkbox_on_background"/>
+        android:icon="@android:drawable/ic_menu_revert"/>
 </menu>

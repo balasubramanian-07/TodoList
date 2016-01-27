@@ -1,7 +1,6 @@
 package com.flipkart.todolist.fragments;
 
 
-import android.app.FragmentManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.adapters.ListViewAdapter;
@@ -88,7 +86,7 @@ public class DeletedTasksFragment extends Fragment implements AsyncTaskCompleted
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 
-                mode.getMenuInflater().inflate(R.menu.custom_action_bar, menu);
+                mode.getMenuInflater().inflate(R.menu.custom_action_bar_recycle_bin, menu);
                 return true;
             }
 

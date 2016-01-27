@@ -1,11 +1,9 @@
 package com.flipkart.todolist.activities;
 
 
-
-
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -32,8 +30,11 @@ public class MainActivity extends AppCompatActivity implements SwitchToAddTodoFr
         if (savedInstanceState == null) {
             loadTodoListFragment();
 
+        }else{
+            FragmentManager manager = getSupportFragmentManager();
+            TaskListFragment taskListFragment = (TaskListFragment) manager.findFragmentByTag(TASK_LIST_FRAGMENT_TAG);
+            taskListFragment.setDelegate(this);
         }
-        // TODO: Need to handle case when device is rotated
     }
 
     @Override

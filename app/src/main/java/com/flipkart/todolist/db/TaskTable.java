@@ -2,8 +2,6 @@ package com.flipkart.todolist.db;
 
 import android.util.Log;
 
-import com.flipkart.todolist.Constants;
-
 public final class TaskTable {
     public static final String TASK_TABLE_NAME = "tasks";
     public static final String ID = "_id";
@@ -49,6 +47,13 @@ public final class TaskTable {
                 + "\"";
 
         return undoDeleteQuery;
+    }
+
+    public static String sortTasksByDate() {
+
+        String sortOnDateQuery = selectQueryForStatusCreated();
+        sortOnDateQuery = sortOnDateQuery + DUE_DATE;
+        return sortOnDateQuery;
     }
 
     public enum ValidStatus {

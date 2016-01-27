@@ -14,4 +14,5 @@ public final class Constants {
     public static final String TASKS_ARRAYLIST_TAG = "tasks_array";
     public static final String SELECTED_TASK_POSITION_TAG = "selected_task_position";
     public static final String SINGLE_TASK_TAG = "single_task";
+    public static final String SORT_BY_DATE = "sort_by_date";
 }
