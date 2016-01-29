@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.async_tasks.AddTask;
@@ -24,6 +25,7 @@ import com.flipkart.todolist.db.DbGateway;
 import com.flipkart.todolist.entities.Task;
 
 import static com.flipkart.todolist.Constants.SINGLE_TASK_TAG;
+import static com.flipkart.todolist.Constants.TASK_DETAIL_SCREEN_TAG;
 
 //import android.app.FragmentManager;
 
@@ -58,6 +60,7 @@ public class TaskDetailFragment extends Fragment {
         Log.i(TAG, "Inside onCreateView of detail fragment");
 
         View fragView = inflater.inflate(R.layout.fragment_task_detail, container, false);
+        getActivity().setTitle(TASK_DETAIL_SCREEN_TAG);
         setWidgets(fragView);
         setWidgetsData();
         setListeners();

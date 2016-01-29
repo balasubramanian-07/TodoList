@@ -15,4 +15,6 @@ public final class Constants {
     public static final String SELECTED_TASK_POSITION_TAG = "selected_task_position";
     public static final String SINGLE_TASK_TAG = "single_task";
     public static final String SORT_BY_DATE = "sort_by_date";
+    public static final String TASK_DETAIL_SCREEN_TAG = "Task Details";
+    public static final String RECYCLE_BIN_SCREEN_TAG = "Recycle Bin";
 }

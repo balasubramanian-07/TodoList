@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.adapters.ListViewAdapter;
@@ -65,6 +66,7 @@ public class DeletedTasksFragment extends Fragment implements AsyncTaskCompleted
         Log.i(TAG, "inside DeleteTasksFragment");
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_deleted_tasks, null);
+        getActivity().setTitle(Constants.RECYCLE_BIN_SCREEN_TAG);
 
         setWidgets(fragmentView);
         showDeletedTasksInUI();
