@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipkart.todolist.Constants;
 import com.flipkart.todolist.R;
 import com.flipkart.todolist.TodoListApplication;
 import com.flipkart.todolist.activities.DetailActivity;
@@ -92,6 +93,8 @@ public class TaskListFragment extends Fragment implements AsyncTaskCompletedList
 
         View fragmentView = inflater.inflate(R.layout.fragment_task_list, null);
         Log.i(TAG, "Inside onCreatView");
+
+        getActivity().setTitle(Constants.TASK_LIST_FRAGMENT);
 
         setWidgets(fragmentView);
         setListeners();

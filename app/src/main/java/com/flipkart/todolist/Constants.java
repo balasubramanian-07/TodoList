@@ -17,4 +17,5 @@ public final class Constants {
     public static final String SORT_BY_DATE = "sort_by_date";
     public static final String TASK_DETAIL_SCREEN_TAG = "Task Details";
     public static final String RECYCLE_BIN_SCREEN_TAG = "Recycle Bin";
+    public static final String TASK_LIST_FRAGMENT = "Task List";
 }
